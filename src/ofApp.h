@@ -6,7 +6,8 @@
 class ofApp : public ofBaseApp{
 
 	public:
-
+		void setup();
+		void draw();
 		ofxPanel panel_;
 
 		//  MARK: - ofBaseApp interface boilerplate:
