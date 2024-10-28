@@ -48,7 +48,6 @@ int KleinExplorer::branch_terminated(){
 	complex<float> comp_p;
 	complex<float> comp_fp;
 
-	int i = 0 ;
 	float o = 0;
 	for (int i = 0; i < fixedPoints[idx_gen].size() - 1; i++){
 		fp = fixedPoints[idx_gen][i];
@@ -122,7 +121,7 @@ void KleinExplorer::compute(){
 	words[0] = start_word ;
 	state[0] = start_state ;
 
-	while (!level == -1 || !tag[0] == start_tag){
+	while (!(level == -1 && tag[0] == start_tag)){
 		while (branch_terminated()){
 
 			forward_move();
@@ -140,6 +139,7 @@ void KleinExplorer::compute(){
 	}
 }
 
-KleinExplorer::KleinExplorer(int max_d){
+KleinExplorer::KleinExplorer(int max_d, float eps, MobiusT start_w): start_word(start_w){
 	max_depth = max_d;
+	epsilon = eps; 
 }

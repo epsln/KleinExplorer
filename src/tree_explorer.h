@@ -1,4 +1,3 @@
-#pragma once
 #ifndef KleinExplorer_h
 #define KleinExplorer_h
 
@@ -11,6 +10,7 @@
 class KleinExplorer{
 	int start_tag;
 	int start_state;
+	MobiusT start_word;
 
 	int level = 0;
 	float epsilon;
@@ -22,10 +22,9 @@ class KleinExplorer{
 	vector<MobiusT> words;
 	vector<MobiusT> generators;
 	vector<vector<complex<float>>> fixedPoints;
-	MobiusT start_word;
 
 	public:
-		KleinExplorer(int max_d);
+		KleinExplorer(int max_d, float epsilon, MobiusT start_w);
 		void set_next_state(int idx_gen);
 		int get_next_state(int idx_gen);
 		int get_right_gen();
