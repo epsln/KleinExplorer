@@ -1,8 +1,9 @@
-#ifndef Mobius 
-#define Mobius 
+#ifndef Mobius_h
+#define Mobius_h
 
 #include <cmath>
 #include <complex>
+
 using namespace std;
 
 class MobiusT{
@@ -11,11 +12,9 @@ class MobiusT{
 	complex<float> c;
 	complex<float> d;
 	public:
-		complex<float> fixedPoints[2];
-
-		void computeFixedPoints();
 		complex<float> apply(complex<float> z);
 		MobiusT compose(MobiusT a);
+		MobiusT(complex<float> a_n, complex<float> b_n, complex<float> c_n, complex<float> d_n);
 };	
 
 #endif

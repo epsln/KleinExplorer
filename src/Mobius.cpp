@@ -1,24 +1,22 @@
 #include <cmath>
 #include <complex>
+
 #include "Mobius.h"
+
 using namespace std;
 
-MobiusT(complex<float> a_n, complex<float> b_n, complex<float> c_n, complex<float> d_n){
+MobiusT::MobiusT(complex<float> a_n, complex<float> b_n, complex<float> c_n, complex<float> d_n){
 	a = a_n;
 	b = b_n;
 	c = c_n;
 	d = d_n;
 }
 
-void computeFixedPoints(){
-
-}
-
-complex<float> apply(complex<float> z){
+complex<float> MobiusT::apply(complex<float> z){
 	return (a * z + b)/(c * z + d);
 }
 
-MobiusT compose(MobiusT m){
+MobiusT MobiusT::compose(MobiusT m){
 	complex<float> a_n, b_n, c_n, d_n;	
 	a_n = a * m.a + b * m.c;
 	b_n = a * m.b + b * m.d;
