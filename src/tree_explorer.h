@@ -4,27 +4,30 @@
 #include <cmath>
 #include <complex>
 #include <vector>
+#include <array>
 
 #include "Mobius.h"
 
 class KleinExplorer{
-	int start_tag;
-	int start_state;
-	MobiusT start_word;
-
+	//Used for multiproc
+	int start_tag = 0;
+	int start_state = 1;
+	MobiusT *generators;
+	MobiusT start_word = generators[0]; //TODO implement this for multiproc
 	int level = 0;
 	float epsilon;
 	int max_depth;
+
 	vector<int> tag;
 	vector<int> state;
-	vector<vector<int>> FSA;
 
+	//Default FSA for now
+	int FSA[5][4] = {{1, 2, 3, 4}, {1, 2, 0, 4}, {1, 2, 3, 0}, {0, 2, 3, 4}, {1, 0, 3, 4}};
 	vector<MobiusT> words;
-	vector<MobiusT> generators;
 	vector<vector<complex<float>>> fixedPoints;
 
 	public:
-		KleinExplorer(int max_d, float epsilon, MobiusT start_w);
+		KleinExplorer(int max_d, float epsilon, MobiusT* generators);
 		void set_next_state(int idx_gen);
 		int get_next_state(int idx_gen);
 		int get_right_gen();

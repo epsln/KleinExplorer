@@ -1,4 +1,5 @@
 #include <complex>
+#include <array>
 #include <cmath>
 
 #include "tree_explorer.h"
@@ -66,7 +67,7 @@ int KleinExplorer::branch_terminated(){
 		p = words[level].apply(fp);
 		comp_p = words[level].apply(comp_fp);
 
-		//TODO: Implement me
+		//TODO: Implement me (using of methods)
 		//line(p, comp_p, img);
 	}
 
@@ -118,8 +119,8 @@ void KleinExplorer::forward_move(){
 
 void KleinExplorer::compute(){
 	tag[0] = start_tag;
-	words[0] = start_word ;
-	state[0] = start_state ;
+	words[0] = generators[0];
+	state[0] = start_state;
 
 	while (!(level == -1 && tag[0] == start_tag)){
 		while (branch_terminated()){
@@ -139,7 +140,14 @@ void KleinExplorer::compute(){
 	}
 }
 
-KleinExplorer::KleinExplorer(int max_d, float eps, MobiusT start_w): start_word(start_w){
+KleinExplorer::KleinExplorer(int max_d, float eps, MobiusT* gen){
 	max_depth = max_d;
 	epsilon = eps; 
+	generators = gen;
+  fill(tag.begin(), tag.end(), 0);//Probably will screw things up
+  fill(state.begin(), state.end(), 0);
+
+	MobiusT defaultWord = MobiusT(0,0,0,0);
+  fill(words.begin(), words.end(), defaultWord);
+
 }
