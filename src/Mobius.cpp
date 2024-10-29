@@ -1,5 +1,6 @@
 #include <cmath>
 #include <complex>
+#include <vector>
 
 #include "Mobius.h"
 
@@ -23,4 +24,17 @@ MobiusT MobiusT::compose(MobiusT m){
 	c_n = c * m.a + d * m.c;
 	d_n = d * m.b + d * m.d;
 	return MobiusT(a_n, b_n, c_n, d_n);
+}
+
+void MobiusT::compute_fixed_points(vector<complex<float>> fp){
+	if (c == (complex<float>)0 && a !=  d){
+		fp.push_back(-b/(a - d));
+		return;
+	}
+	complex<float> z0 = (a - d) + sqrt(pow(a - d, 2) + float(4) * b * c)/(float(2) * c);
+	complex<float> z1 = (a - d) - sqrt(pow(a - d, 2) + float(4) * b * c)/(float(2) * c);
+	fp.push_back(z0);
+	fp.push_back(z1);
+	//TODO: Check multiplicity of roots
+	return;
 }
