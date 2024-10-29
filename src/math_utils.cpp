@@ -1,0 +1,20 @@
+#include <vector>
+#include "math_utils.h"
+
+using namespace std;
+
+int mod(int a, int b){
+	//Special mod that also works for negative inputs
+	int r = a % b;
+	if (r < 0)
+		return r + b;
+	else
+		return r;
+}
+
+void cyclic_permutation(vector<int>& word, vector<int>& cyclic_perm, int shift){
+	//Compute a cyclic permutation for the input word
+	for (int i = 0; i < word.size(); i++){
+		cyclic_perm.push_back(word[(i + shift) % word.size()]);
+	}
+}
