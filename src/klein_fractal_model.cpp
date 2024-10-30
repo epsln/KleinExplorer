@@ -1,12 +1,14 @@
 #include "klein_fractal_model.h"
 #include "math_utils.h"
 #include <vector>
+#include <cstring>
 #include <algorithm>
 using namespace std;
 
-//KleinFractalModel::KleinFractalModel(gen, Fraction spe_fract) special_fract(spe_fract){
-//	generators = gen;
-//}
+KleinFractalModel::KleinFractalModel(MobiusT gen[4], Fraction spe_fract): special_fract(spe_fract){
+	memcpy(generators, gen, sizeof(MobiusT) * 4);
+	compute_fixed_points();
+}
 
 void KleinFractalModel::compute_fixed_points(){
 	// See pp. 276

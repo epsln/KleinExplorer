@@ -11,11 +11,12 @@ class KleinFractalModel{
   Fraction special_fract;
 
 	public:
-		MobiusT *generators;
+		MobiusT generators[4];
 		vector<vector<complex<float>>> fixedPoints;
 		
 	private:
 		void compute_fixed_points();
+		KleinFractalModel(MobiusT gen[4], Fraction spe_fract);	
 };
 
 #endif
