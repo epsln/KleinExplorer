@@ -7,12 +7,13 @@
 #include <array>
 
 #include "Mobius.h"
+#include "klein_fractal_model.h"
 
 class KleinExplorer{
 	//Used for multiproc
 	int start_tag = 0;
 	int start_state = 1;
-	MobiusT *generators;
+	MobiusT generators[4];
 	MobiusT start_word = generators[0]; //TODO implement this for multiproc
 	int level = 0;
 	float epsilon;
@@ -27,7 +28,7 @@ class KleinExplorer{
 	vector<vector<complex<float>>> fixedPoints;
 
 	public:
-		KleinExplorer(int max_d, float epsilon, MobiusT* generators);
+		KleinExplorer(int max_d, float epsilon, KleinFractalModel kfm);
 		void set_next_state(int idx_gen);
 		int get_next_state(int idx_gen);
 		int get_right_gen();

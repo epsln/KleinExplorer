@@ -1,10 +1,11 @@
 #include <complex>
-#include <array>
+#include <cstring>
 #include <cmath>
 
 #include "tree_explorer.h"
 #include "Mobius.h"
 #include "math_utils.h"
+#include "klein_fractal_model.h"
 
 using namespace std;
 
@@ -140,14 +141,14 @@ void KleinExplorer::compute(){
 	}
 }
 
-KleinExplorer::KleinExplorer(int max_d, float eps, MobiusT* gen){
+KleinExplorer::KleinExplorer(int max_d, float eps, KleinFractalModel kfm){
 	max_depth = max_d;
 	epsilon = eps; 
-	generators = gen;
+	memcpy(generators, kfm.generators, sizeof(MobiusT) * 4);
+	fixedPoints = kfm.fixedPoints;
   fill(tag.begin(), tag.end(), 0);//Probably will screw things up
   fill(state.begin(), state.end(), 0);
 
 	MobiusT defaultWord = MobiusT(0,0,0,0);
   fill(words.begin(), words.end(), defaultWord);
-
 }
