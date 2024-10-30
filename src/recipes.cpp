@@ -1,74 +1,56 @@
 #include <complex>
+#include <cmath>
 
 #include "recipes.h"
 #include "Mobius.h"
 
 using namespace std;
 
-void maskitRecipe(complex<float> ta, MobiusT* gens){
+void maskitRecipe(complex<float> ta, MobiusT gens[4]){
 	//See pp. 259
+	//
+	const complex<float> i(0.0, 1.0);
 
-	printf("mu:  %lf + %lf\n", creal(ta), cimag(ta));
+	MobiusT a = MobiusT(ta, -i, -i, 0);
+	MobiusT b = MobiusT(1, 2, 0, 1);
+	MobiusT A = a.inverse();
+	MobiusT B = b.inverse();
 
-	gens[(0 * 2 + 0) * 2 + 0] = ta;
-	gens[(0 * 2 + 0) * 2 + 1] = -I; 
-	gens[(0 * 2 + 1) * 2 + 0] = -I;
-	gens[(0 * 2 + 1) * 2 + 1] = 0; 
-
-	gens[(1 * 2 + 0) * 2 + 0] = 1;
-	gens[(1 * 2 + 0) * 2 + 1] = 2; 
-	gens[(1 * 2 + 1) * 2 + 0] = 0;
-	gens[(1 * 2 + 1) * 2 + 1] = 1; 
-
-	gens[(2 * 2 + 0) * 2 + 0] =  gens[(0 * 2 + 1) * 2 + 1];
-	gens[(2 * 2 + 0) * 2 + 1] = -gens[(0 * 2 + 0) * 2 + 1];
-	gens[(2 * 2 + 1) * 2 + 0] = -gens[(0 * 2 + 1) * 2 + 0];
-	gens[(2 * 2 + 1) * 2 + 1] =  gens[(0 * 2 + 0) * 2 + 0];
-
-	gens[(3 * 2 + 0) * 2 + 0] =  gens[(1 * 2 + 1) * 2 + 1];
-	gens[(3 * 2 + 0) * 2 + 1] = -gens[(1 * 2 + 0) * 2 + 1];
-	gens[(3 * 2 + 1) * 2 + 0] = -gens[(1 * 2 + 1) * 2 + 0];
-	gens[(3 * 2 + 1) * 2 + 1] =  gens[(1 * 2 + 0) * 2 + 0];
+	gens[0] = a;
+	gens[1] = b;
+	gens[2] = A;
+	gens[3] = B;
 }
 
-
-
 void grandmaRecipe(complex<float> ta, complex<float> tb, MobiusT* gens){
-	if (ta == 0 && tb == 0){
+	if (ta == (float)0 && tb == (float)0){
 		printf("Error ! ta and tb cannot be both == 0 !\n Exiting...\n");
 		exit(-3);
 	}
-	printf("ta:  %lf + %lf\n", creal(ta), cimag(ta));
-	printf("tb:  %lf + %lf\n", creal(tb), cimag(tb));
+	const complex<float> i(0.0, 1.0);
+	//Couldnt figure out a better way to multiply complex floats with anything
+	//WTF C++ ???
+	const float two = (float) 2;
+	const float four = (float) 4;
 
-	double complex a = 1;
-	double complex b = (-ta * tb);
-	double complex c = ta * ta + tb * tb;
-	double complex delta = b*b - 4 * a * c; 
-	double complex tab = (- b - csqrt(delta))/(2 * a); 
-	double complex z0 = ((tab - 2) * tb)/(tb * tab - 2 * ta + 2 * I * tab);
+	complex<float> a = 1;
+	complex<float> b = (-ta * tb);
+	complex<float> c = ta * ta + tb * tb;
+	complex<float> delta = b*b - four * a * c; 
+	complex<float> tab = (- b - sqrt(delta))/(two * a); 
+	complex<float> z0 = ((tab - two) * tb)/(tb * tab - two * ta + two * i * tab);
 
-	gens[(0 * 2 + 0) * 2 + 0] = ta/2;
-	gens[(0 * 2 + 1) * 2 + 0] =  (ta*tab - 2 * tb + 4 * I)/(z0*(2 * tab + 4)); 
-	gens[(0 * 2 + 0) * 2 + 1] = ((ta * tab - 2 * tb - 4 * I)*z0)/(2* tab - 4);
-	gens[(0 * 2 + 1) * 2 + 1] = ta/2; 
+	MobiusT ma = MobiusT(ta/two, (ta*tab - two * tb + four * i)/(z0*(two * tab + four)),
+										  ((ta * tab - two * tb - four * i)*z0)/(two * tab - four), ta/two);
 
-	gens[(1 * 2 + 0) * 2 + 0] = (tb - 2 * I)/2;
-	gens[(1 * 2 + 1) * 2 + 0] = tb/2; 
-	gens[(1 * 2 + 0) * 2 + 1] = tb/2;
-	gens[(1 * 2 + 1) * 2 + 1] = (tb + 2 * I)/2; 
+	MobiusT mb = MobiusT((tb - two * i)/two, tb/two, tb/two, (tb + two * i)/two);
+	MobiusT mA = ma.inverse();
+	MobiusT mB = mb.inverse();
 
-
-	gens[(2 * 2 + 0) * 2 + 0] =  gens[(0 * 2 + 1) * 2 + 1 ];
-	gens[(2 * 2 + 1) * 2 + 0] = -gens[(0 * 2 + 1) * 2 + 0 ];
-	gens[(2 * 2 + 0) * 2 + 1] = -gens[(0 * 2 + 0) * 2 + 1 ];
-	gens[(2 * 2 + 1) * 2 + 1] =  gens[(0 * 2 + 0) * 2 + 0 ];
-
-	gens[(3 * 2 + 0) * 2 + 0] =  gens[(1 * 2 + 1) * 2 + 1 ];
-	gens[(3 * 2 + 1) * 2 + 0] = -gens[(1 * 2 + 1) * 2 + 0 ];
-	gens[(3 * 2 + 0) * 2 + 1] = -gens[(1 * 2 + 0) * 2 + 1 ];
-	gens[(3 * 2 + 1) * 2 + 1] =  gens[(1 * 2 + 0) * 2 + 0 ];
-
+	gens[0] = ma;
+	gens[1] = mb;
+	gens[2] = mA;
+	gens[3] = mB;
 }
 
 void grandmaSpecialRecipe(complex<float> ta, complex<float> tb, complex<float> tab, MobiusT* gens){
@@ -77,66 +59,56 @@ void grandmaSpecialRecipe(complex<float> ta, complex<float> tb, complex<float> t
 	//	printf("ta:  %lf + %lf\n", creal(ta), cimag(ta));
 	//	printf("tb:  %lf + %lf\n", creal(tb), cimag(tb));
 	//	printf("tab: %lf + %lf\n", creal(tab), cimag(tab));
-	double complex tc = ta * ta + tb * tb + tab * tab - ta * tb * tab - 2;
-	double complex Q  = csqrt(2 - tc);	
-	double complex R = 0;
+	const complex<float> i(0.0, 1.0);
+	const float two = (float) 2;
+	const float four = (float) 4;
 
-	if (cabs(tab) == 2){ 
+	complex<float> tc = ta * ta + tb * tb + tab * tab - ta * tb * tab - two;
+	complex<float> Q  = sqrt(two - tc);	
+	complex<float> R = 0;
+
+	if (abs(tab) == two){ 
 		printf("Error ! taB cannot be == +/- 2 !\n Exiting...\n");
 		exit(-3);
 	}
-	if (cabs(tc + I * Q * csqrt(tc + 2)) >= 2)
-		R = csqrt(tc + 2);
+	if (abs(tc + i * Q * sqrt(tc + two)) >= two)
+		R = sqrt(tc + two);
 	else
-		R = -csqrt(tc + 2);
+		R = -sqrt(tc + two);
 
-	double complex z0 = ((tab - 2) * (tb + R))/(tb * tab - 2 * ta + I * Q * tab);
+	complex<float> z0 = ((tab - two) * (tb + R))/(tb * tab - two * ta + i * Q * tab);
 
-	gens[(0 * 2 + 0) * 2 + 0] = ta/2;
-	gens[(0 * 2 + 1) * 2 + 0] =  (ta * tab - 2 * tb + 2 * I * Q)/(z0 * (2 * tab + 4)); 
-	gens[(0 * 2 + 0) * 2 + 1] = ((ta * tab - 2 * tb - 2 * I * Q) * z0)/(2 * tab - 4);
-	gens[(0 * 2 + 1) * 2 + 1] = ta/2; 
+	MobiusT a = MobiusT(ta/two,  (ta * tab - two * tb + two * i * Q)/(z0 * (two * tab + four)), 
+											((ta * tab - two * tb - two * i * Q) * z0)/(two * tab - four), ta/two);
 
-	gens[(1 * 2 + 0) * 2 + 0] = (tb - I * Q)/2;
-	gens[(1 * 2 + 1) * 2 + 0] = (tb * tab - 2 * ta - I * Q * tab)/(z0*(2 * tab + 4));
-	gens[(1 * 2 + 0) * 2 + 1] = ((tb * tab - 2 * ta + I * Q * tab)*z0)/(2 * tab - 4);
-	gens[(1 * 2 + 1) * 2 + 1] = (tb + I * Q)/2; 
+	MobiusT b = MobiusT((tb - i * Q)/two, (tb * tab - two * ta - i * Q * tab)/(z0 * (two * tab + four)), 
+											((tb * tab - two * ta + i * Q * tab) * z0)/(two * tab - four), (tb + i * Q)/two);  
 
-	gens[(2 * 2 + 0) * 2 + 0] =  gens[(0 * 2 + 1) * 2 + 1];
-	gens[(2 * 2 + 1) * 2 + 0] = -gens[(0 * 2 + 1) * 2 + 0];
-	gens[(2 * 2 + 0) * 2 + 1] = -gens[(0 * 2 + 0) * 2 + 1];
-	gens[(2 * 2 + 1) * 2 + 1] =  gens[(0 * 2 + 0) * 2 + 0];
+	MobiusT A = a.inverse();
+	MobiusT B = b.inverse();
 
-	gens[(3 * 2 + 0) * 2 + 0] =  gens[(1 * 2 + 1) * 2 + 1];
-	gens[(3 * 2 + 1) * 2 + 0] = -gens[(1 * 2 + 1) * 2 + 0];
-	gens[(3 * 2 + 0) * 2 + 1] = -gens[(1 * 2 + 0) * 2 + 1];
-	gens[(3 * 2 + 1) * 2 + 1] =  gens[(1 * 2 + 0) * 2 + 0];
-
+	gens[0] = a;
+	gens[1] = b;
+	gens[2] = A;
+	gens[3] = B;
 }
 
 void jorgensen(complex<float> ta, complex<float> tb, MobiusT* gens){
-	printf("ta:  %lf + %lf\n", creal(ta), cimag(ta));
-	printf("tb:  %lf + %lf\n", creal(tb), cimag(tb));
-	double complex z   = 0.5 * csqrt(ta * ta * tb * tb - 4 * ta * ta - 4 * tb * tb);
-	double complex tab = 0.5 * (ta * tb) - z;
+	const complex<float> i(0.0, 1.0);
+	const float two = (float) 2;
+	const float four = (float) 4;
 
-	gens[(0 * 2 + 0) * 2 + 0] = ta - tb / tab;
-	gens[(0 * 2 + 1) * 2 + 0] = ta / (tab * tab);
-	gens[(0 * 2 + 0) * 2 + 1] = ta;
-	gens[(0 * 2 + 1) * 2 + 1] = tb / (tab);
+	complex<float> z   = 1/two * sqrt(ta * ta * tb * tb - four * ta * ta - four * tb * tb);
+	complex<float> tab = 1/two * (ta * tb) - z;
 
-	gens[(1 * 2 + 0) * 2 + 0] = tb - ta / tab;
-	gens[(1 * 2 + 1) * 2 + 0] = -tb / (tab * tab); 
-	gens[(1 * 2 + 0) * 2 + 1] = -tb; 
-	gens[(1 * 2 + 1) * 2 + 1] = ta / tab; 
+	MobiusT a = MobiusT(ta - tb / tab, ta / (tab * tab), ta, tb/tab);
+	MobiusT b = MobiusT(tb - ta / tab, -tb, -tb, ta / tab);
 
-	gens[(2 * 2 + 0) * 2 + 0] =  gens[(0 * 2 + 1) * 2 + 1];
-	gens[(2 * 2 + 1) * 2 + 0] = -gens[(0 * 2 + 1) * 2 + 0];
-	gens[(2 * 2 + 0) * 2 + 1] = -gens[(0 * 2 + 0) * 2 + 1];
-	gens[(2 * 2 + 1) * 2 + 1] =  gens[(0 * 2 + 0) * 2 + 0];
+	MobiusT A = a.inverse();
+	MobiusT B = a.inverse();
 
-	gens[(3 * 2 + 0) * 2 + 0] =  gens[(1 * 2 + 1) * 2 + 1];
-	gens[(3 * 2 + 1) * 2 + 0] = -gens[(1 * 2 + 1) * 2 + 0];
-	gens[(3 * 2 + 0) * 2 + 1] = -gens[(1 * 2 + 0) * 2 + 1];
-	gens[(3 * 2 + 1) * 2 + 1] =  gens[(1 * 2 + 0) * 2 + 0];
+	gens[0] = a;
+	gens[1] = b;
+	gens[2] = A;
+	gens[3] = B;
 }
