@@ -38,3 +38,7 @@ void MobiusT::compute_fixed_points(vector<complex<float>> fp){
 	//TODO: Check multiplicity of roots
 	return;
 }
+
+MobiusT MobiusT::inverse(){
+	return MobiusT(d, -b, -c, a);
+}
