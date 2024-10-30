@@ -17,6 +17,7 @@ class MobiusT{
 		void compute_fixed_points(vector<complex<float>> z);
 		MobiusT compose(MobiusT a);
 		MobiusT(complex<float> a_n, complex<float> b_n, complex<float> c_n, complex<float> d_n);
+		MobiusT();
 };	
 
 #endif
