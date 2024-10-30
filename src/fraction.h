@@ -2,8 +2,8 @@
 #define Fraction_h
 
 class Fraction {
-	int p, q;
 	public:
+		int p, q;
 		Fraction(int p_, int q_);
 		Fraction add(Fraction f);
 		Fraction sub(Fraction f);
