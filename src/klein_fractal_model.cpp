@@ -3,11 +3,14 @@
 #include <vector>
 #include <cstring>
 #include <algorithm>
+#include "ofMain.h"
+
 using namespace std;
 
 KleinFractalModel::KleinFractalModel(MobiusT gen[4], Fraction spe_fract): special_fract(spe_fract){
 	memcpy(generators, gen, sizeof(MobiusT) * 4);
 	compute_fixed_points();
+	
 }
 
 void KleinFractalModel::compute_fixed_points(){
@@ -37,20 +40,28 @@ void KleinFractalModel::compute_fixed_points(){
 	}
 
 	vector<vector<int>> special_words;
-	special_words.push_back({0});
-	special_words.push_back({1});
-	special_words.push_back({2});
-	special_words.push_back({3});
+
+	vector<complex<float>> fp;
+	fixedPoints.push_back(vector<complex<float>> {0});
+	fixedPoints.push_back(vector<complex<float>> {0});
+	fixedPoints.push_back(vector<complex<float>> {0});
+	fixedPoints.push_back(vector<complex<float>> {0});
+	//generators[0].compute_fixed_points(fixedPoints[0]);
+	//generators[1].compute_fixed_points(fixedPoints[1]);
+	//generators[2].compute_fixed_points(fixedPoints[2]);
+	//generators[3].compute_fixed_points(fixedPoints[3]);
+	ofLog(OF_LOG_NOTICE, "%f %f", real(fixedPoints[0][0]), imag(fixedPoints[0][0]));
+	
 	special_words.push_back({0, 1, 2, 3});
 	special_words.push_back(special_word);
 	special_words.push_back(special_word_inv);
 	special_words.push_back({1, 0, 3, 2});
 
-	vector<int> perm;
 	int idx_gen;
 
 	for (auto word: special_words){
 		for (int i = 0; i < word.size(); i++){
+			vector<int> perm;
 			cyclic_permutation(word, perm, i);
 
 			MobiusT m = generators[perm[0]];
@@ -59,7 +70,6 @@ void KleinFractalModel::compute_fixed_points(){
 			}
 
 			idx_gen = perm.back();
-			vector<complex<float>> fp;
 			m.compute_fixed_points(fp);
 			fixedPoints[idx_gen].insert(fixedPoints[idx_gen].end(), fp.begin(), fp.end() );
 		}
