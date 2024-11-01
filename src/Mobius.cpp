@@ -2,6 +2,7 @@
 #include <complex>
 #include <vector>
 
+#include "ofMain.h"
 #include "Mobius.h"
 
 using namespace std;
@@ -11,6 +12,13 @@ MobiusT::MobiusT(complex<float> a_n, complex<float> b_n, complex<float> c_n, com
 	b = b_n;
 	c = c_n;
 	d = d_n;
+}
+
+MobiusT::MobiusT(){
+	a = 0;
+	b = 0;
+	c = 0;
+	d = 0;
 }
 
 complex<float> MobiusT::apply(complex<float> z){
@@ -41,4 +49,8 @@ void MobiusT::compute_fixed_points(vector<complex<float>> fp){
 
 MobiusT MobiusT::inverse(){
 	return MobiusT(d, -b, -c, a);
+}
+
+void MobiusT::print(){
+	ofLog(OF_LOG_NOTICE, "[%f %f, %f %f,%f %f, %f %f]", real(a), imag(a), real(b), imag(b), real(c), imag(c), real(d), imag(d)); 
 }

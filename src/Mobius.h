@@ -19,6 +19,7 @@ class MobiusT{
 		MobiusT inverse();
 		MobiusT(complex<float> a_n, complex<float> b_n, complex<float> c_n, complex<float> d_n);
 		MobiusT();
+		void print();
 };	
 
 #endif
