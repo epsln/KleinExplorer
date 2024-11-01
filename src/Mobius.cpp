@@ -34,7 +34,9 @@ MobiusT MobiusT::compose(MobiusT m){
 	return MobiusT(a_n, b_n, c_n, d_n);
 }
 
-void MobiusT::compute_fixed_points(vector<complex<float>> fp){
+void MobiusT::compute_fixed_points(vector<complex<float>>& fp){
+	//TODO: Find a cleaner way of doing this (creating and pushing a 1D array into 2D)
+	fp.clear();
 	if (c == (complex<float>)0 && a !=  d){
 		fp.push_back(-b/(a - d));
 		return;
