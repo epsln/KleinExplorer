@@ -42,16 +42,16 @@ void KleinFractalModel::compute_fixed_points(){
 	vector<vector<int>> special_words;
 
 	vector<complex<float>> fp;
+	//Couldn't find a better way to init 
 	fixedPoints.push_back(vector<complex<float>> {0});
 	fixedPoints.push_back(vector<complex<float>> {0});
 	fixedPoints.push_back(vector<complex<float>> {0});
 	fixedPoints.push_back(vector<complex<float>> {0});
-	//generators[0].compute_fixed_points(fixedPoints[0]);
-	//generators[1].compute_fixed_points(fixedPoints[1]);
-	//generators[2].compute_fixed_points(fixedPoints[2]);
-	//generators[3].compute_fixed_points(fixedPoints[3]);
-	ofLog(OF_LOG_NOTICE, "%f %f", real(fixedPoints[0][0]), imag(fixedPoints[0][0]));
 	
+	special_words.push_back({0});
+	special_words.push_back({1});
+	special_words.push_back({2});
+	special_words.push_back({3});
 	special_words.push_back({0, 1, 2, 3});
 	special_words.push_back(special_word);
 	special_words.push_back(special_word_inv);
@@ -73,5 +73,8 @@ void KleinFractalModel::compute_fixed_points(){
 			m.compute_fixed_points(fp);
 			fixedPoints[idx_gen].insert(fixedPoints[idx_gen].end(), fp.begin(), fp.end() );
 		}
+	}
+	for (int i = 0; i < 4; i++){
+		fixedPoints[i].erase(fixedPoints[i].begin());
 	}
 }
