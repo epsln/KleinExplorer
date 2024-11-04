@@ -39,7 +39,7 @@ complex<float> MobiusT::compute_fixed_points(){
 		return -b/(a - d);
 	}
 	complex<float> z0 = (a - d - sqrt(pow(a + d, 2) + float(4) * b * c))/(float(2) * c); 
-	ofLog(OF_LOG_DEBUG, "z0: %f %f\n", real(z0), imag(z0)); 
+	ofLog(OF_LOG_VERBOSE, "z0: %f %f\n", real(z0), imag(z0)); 
 	return z0;
 }
 
