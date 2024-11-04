@@ -48,10 +48,6 @@ void KleinFractalModel::compute_fixed_points(){
 	fixedPoints.push_back(vector<complex<float>> {0});
 	fixedPoints.push_back(vector<complex<float>> {0});
 	
-	special_words.push_back({0});
-	special_words.push_back({1});
-	special_words.push_back({2});
-	special_words.push_back({3});
 	special_words.push_back({0, 1, 2, 3});
 	special_words.push_back(special_word);
 	special_words.push_back(special_word_inv);
@@ -68,10 +64,10 @@ void KleinFractalModel::compute_fixed_points(){
 			for (int j = 1; j < perm.size(); j++){
 				m = m.compose(generators[perm[j]]);
 			}
+			m.print();
 
 			idx_gen = perm.back();
-			m.compute_fixed_points(fp);
-			fixedPoints[idx_gen].insert(fixedPoints[idx_gen].end(), fp.begin(), fp.end() );
+			fixedPoints[idx_gen].push_back(m.compute_fixed_points());
 		}
 	}
 	for (int i = 0; i < 4; i++){
