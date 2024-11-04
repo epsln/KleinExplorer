@@ -14,7 +14,7 @@ class MobiusT{
 	complex<float> d;
 	public:
 		complex<float> apply(complex<float> z);
-		void compute_fixed_points(vector<complex<float>>& fp);
+		complex<float> compute_fixed_points();
 		MobiusT compose(MobiusT a);
 		MobiusT inverse();
 		MobiusT(complex<float> a_n, complex<float> b_n, complex<float> c_n, complex<float> d_n);

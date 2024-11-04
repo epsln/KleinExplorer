@@ -34,19 +34,11 @@ MobiusT MobiusT::compose(MobiusT m){
 	return MobiusT(a_n, b_n, c_n, d_n);
 }
 
-void MobiusT::compute_fixed_points(vector<complex<float>>& fp){
-	//TODO: Find a cleaner way of doing this (creating and pushing a 1D array into 2D)
-	fp.clear();
+complex<float> MobiusT::compute_fixed_points(){
 	if (c == (complex<float>)0 && a !=  d){
-		fp.push_back(-b/(a - d));
-		return;
+		return -b/(a - d);
 	}
-	complex<float> z0 = (a - d) + sqrt(pow(a - d, 2) + float(4) * b * c)/(float(2) * c);
-	complex<float> z1 = (a - d) - sqrt(pow(a - d, 2) + float(4) * b * c)/(float(2) * c);
-	fp.push_back(z0);
-	fp.push_back(z1);
-	//TODO: Check multiplicity of roots
-	return;
+	return (a - d) + sqrt(pow(a - d, 2) + float(4) * b * c)/(float(2) * c);
 }
 
 MobiusT MobiusT::inverse(){
