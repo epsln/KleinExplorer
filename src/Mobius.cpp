@@ -48,5 +48,5 @@ MobiusT MobiusT::inverse(){
 }
 
 void MobiusT::print(){
-	ofLog(OF_LOG_NOTICE, "[%f %f, %f %f,%f %f, %f %f]", real(a), imag(a), real(b), imag(b), real(c), imag(c), real(d), imag(d)); 
+	ofLog(OF_LOG_VERBOSE, "[%f %f, %f %f,%f %f, %f %f]", real(a), imag(a), real(b), imag(b), real(c), imag(c), real(d), imag(d)); 
 }
