@@ -8,7 +8,13 @@ class ofApp : public ofBaseApp{
 	public:
 		void setup();
 		void draw();
-		ofxPanel panel_;
+		ofxFloatSlider ta_real;
+		ofxFloatSlider ta_imag;
+		ofxFloatSlider tb_real;
+		ofxFloatSlider tb_imag;
+		ofxIntField max_depth;
+		ofxFloatField epsilon;
+		ofxPanel parametersPanel;
 
 		//  MARK: - ofBaseApp interface boilerplate:
 		//  void update() override;
