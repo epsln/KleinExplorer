@@ -39,6 +39,7 @@ class KleinExplorer{
 		void turn_forward_move();
 		void forward_move();
 		void compute();
+		void print_word();
 };
 
 #endif

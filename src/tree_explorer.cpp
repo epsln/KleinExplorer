@@ -1,6 +1,7 @@
 #include <complex>
 #include <cstring>
 #include <cmath>
+#include <string>
 #include "ofMain.h"
 
 #include "tree_explorer.h"
@@ -52,7 +53,7 @@ int KleinExplorer::branch_terminated(){
 	complex<float> comp_fp;
 
 	float o = 0;
-	ofLog(OF_LOG_NOTICE, "Branch termination @ level: %d", level) ;
+	ofLog(OF_LOG_VERBOSE, "Branch termination @ level: %d", level) ;
 	for (int i = 0; i < fixedPoints[idx_gen].size() - 1; i++){
 		fp = fixedPoints[idx_gen][i];
 		comp_fp = fixedPoints[idx_gen][i + 1];
@@ -60,7 +61,8 @@ int KleinExplorer::branch_terminated(){
 		p = words[level].apply(fp);
 		comp_p = words[level].apply(comp_fp);
 		o += abs(p - comp_p);
-		ofLog(OF_LOG_NOTICE, "p0: %f %f, p1: %f %f, abs: %f", real(p), imag(p), real(comp_p), imag(comp_p), abs(p - comp_p)); 
+		ofLog(OF_LOG_VERBOSE, "FP[%d][%d] = %f %f", idx_gen, i, real(fixedPoints[idx_gen][i]), imag(fixedPoints[idx_gen][i])); 
+		ofLog(OF_LOG_VERBOSE, "p0: %f %f, p1: %f %f, abs: %f", real(p), imag(p), real(comp_p), imag(comp_p), abs(p - comp_p)); 
 
 		if (abs(p - comp_p) > epsilon)
 			return 0;
@@ -79,7 +81,7 @@ int KleinExplorer::branch_terminated(){
 		float y1 = ofMap(imag(comp_p), -1, 1, 0, 1080);
 		ofSetColor(225);
 		ofSetLineWidth(1);
-		ofLog(OF_LOG_NOTICE, "Point %d %d", x0, y0); 
+		ofLog(OF_LOG_VERBOSE, "Point %f %f", x0, y0); 
 		ofDrawLine(x0, y0, x1, y1);
 	}
 
@@ -87,8 +89,9 @@ int KleinExplorer::branch_terminated(){
 }
 
 void KleinExplorer::backward_move(){
-	ofLog(OF_LOG_NOTICE, "Backward move @ level: %d", level) ;
+	ofLog(OF_LOG_VERBOSE, "Backward move @ level: %d", level) ;
 	level -= 1;
+	print_word();
 }
 
 int KleinExplorer::available_turn(){
@@ -96,6 +99,7 @@ int KleinExplorer::available_turn(){
 	if (level == -1)
 		return 1;
 
+	ofLog(OF_LOG_VERBOSE, "Avaiable Turn @ level: %d = %d ", level, FSA[state[level + 1]][idx_gen]) ;
 	if (FSA[state[level + 1]][idx_gen] == 0)
 		return 0;
 	else
@@ -103,7 +107,7 @@ int KleinExplorer::available_turn(){
 }
 
 void KleinExplorer::turn_forward_move(){
-	ofLog(OF_LOG_NOTICE, "Turn Forward move @ level: %d", level) ;
+	ofLog(OF_LOG_VERBOSE, "Turn Forward move @ level: %d", level) ;
 	int idx_gen = get_left_gen();
 
 	set_next_state(idx_gen);
@@ -112,25 +116,27 @@ void KleinExplorer::turn_forward_move(){
 	if (level == -1)
 		words[0] = generators[idx_gen];
 	else
-		words[level] = words[level - 1].compose(generators[idx_gen]);
+		words[level + 1] = words[level].compose(generators[idx_gen]);
 
 	level += 1;
+	print_word();
 }
 
 void KleinExplorer::forward_move(){
-	ofLog(OF_LOG_NOTICE, "Forward move @ level: %d", level) ;
+	ofLog(OF_LOG_VERBOSE, "Forward move @ level: %d", level) ;
 	int idx_gen = get_right_gen();
 
 	set_next_state(idx_gen);
 
 	tag[level + 1] = idx_gen;
 
-	words[level].print();
 	if (level == -1)
 		words[0] = generators[idx_gen];
 	else
-		words[level] = words[level - 1].compose(generators[idx_gen]);
+		words[level + 1] = words[level].compose(generators[idx_gen]);
+
 	level += 1;
+	print_word();
 }
 
 void KleinExplorer::compute(){
@@ -138,21 +144,36 @@ void KleinExplorer::compute(){
 	words[0] = generators[0];
 	state[0] = 1;
 
-	ofLog(OF_LOG_NOTICE, "Compute @ level %d", level); 
-	while (!(level == -1 && tag[0] == start_tag)){
-		while (branch_terminated())
+	ofLog(OF_LOG_VERBOSE, "Compute @ level %d", level); 
+	while (!(level == -1 && tag[0] == 1)){
+		while (branch_terminated() == 0)
 			forward_move();
 
 		do	
 			backward_move();
-		while(available_turn() != 1 || level != -1);
+		while(available_turn() == 0 && level != -1);
 
-		if (level == -1 && tag[0] == start_tag)
+		if (level == -1 && tag[0] == 1)
 			break;
 
 		turn_forward_move();
 
 	}
+}
+
+void KleinExplorer::print_word(){
+	string word = "";
+	for (int i = 0; i < level; i++){
+		if (tag[i] == 0)
+			word.append("a");
+		else if (tag[i] == 1)
+			word.append("b");
+		else if (tag[i] == 2)
+			word.append("A");
+		else if (tag[i] == 3)
+			word.append("B");
+	}
+	ofLog(OF_LOG_VERBOSE, "%s", word.c_str());
 }
 
 KleinExplorer::KleinExplorer(int max_d, float eps, KleinFractalModel kfm){
@@ -165,7 +186,6 @@ KleinExplorer::KleinExplorer(int max_d, float eps, KleinFractalModel kfm){
 	words.reserve(max_d);
 	fill(tag.begin(), tag.end(), 0);//Probably will screw things up
 	fill(state.begin(), state.end(), 0);
-
 	MobiusT defaultWord = MobiusT(0,0,0,0);
 	fill(words.begin(), words.end(), defaultWord);
 }
