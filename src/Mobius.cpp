@@ -30,7 +30,7 @@ MobiusT MobiusT::compose(MobiusT m){
 	a_n = a * m.a + b * m.c;
 	b_n = a * m.b + b * m.d;
 	c_n = c * m.a + d * m.c;
-	d_n = d * m.b + d * m.d;
+	d_n = c * m.b + d * m.d;
 	return MobiusT(a_n, b_n, c_n, d_n);
 }
 
@@ -38,7 +38,9 @@ complex<float> MobiusT::compute_fixed_points(){
 	if (c == (complex<float>)0 && a !=  d){
 		return -b/(a - d);
 	}
-	return (a - d) + sqrt(pow(a - d, 2) + float(4) * b * c)/(float(2) * c);
+	complex<float> z0 = (a - d - sqrt(pow(a + d, 2) + float(4) * b * c))/(float(2) * c); 
+	ofLog(OF_LOG_DEBUG, "z0: %f %f\n", real(z0), imag(z0)); 
+	return z0;
 }
 
 MobiusT MobiusT::inverse(){
