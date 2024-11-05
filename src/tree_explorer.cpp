@@ -54,6 +54,7 @@ int KleinExplorer::branch_terminated(){
 
 	float o = 0;
 	ofLog(OF_LOG_VERBOSE, "Branch termination @ level: %d", level) ;
+	words[level].print();
 	for (int i = 0; i < fixedPoints[idx_gen].size() - 1; i++){
 		fp = fixedPoints[idx_gen][i];
 		comp_fp = fixedPoints[idx_gen][i + 1];
@@ -99,7 +100,7 @@ int KleinExplorer::available_turn(){
 	if (level == -1)
 		return 1;
 
-	ofLog(OF_LOG_VERBOSE, "Avaiable Turn @ level: %d = %d ", level, FSA[state[level + 1]][idx_gen]) ;
+	ofLog(OF_LOG_VERBOSE, "Available Turn @ level: %d = %d ", level, FSA[state[level + 1]][idx_gen]) ;
 	if (FSA[state[level + 1]][idx_gen] == 0)
 		return 0;
 	else
