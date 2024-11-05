@@ -58,8 +58,7 @@ void KleinFractalModel::compute_fixed_points(){
 	for (auto word: special_words){
 		for (int i = 0; i < word.size(); i++){
 			vector<int> perm;
-			cyclic_permutation(word, perm, i);
-
+			cyclic_permutation(word, perm, -i);
 			MobiusT m = generators[perm[0]];
 			for (int j = 1; j < perm.size(); j++){
 				m = m.compose(generators[perm[j]]);
