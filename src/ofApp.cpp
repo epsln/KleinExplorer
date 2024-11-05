@@ -7,14 +7,15 @@ void ofApp::setup(){
 
 	parametersPanel.setup("Klein Explorer v0");
 	parametersPanel.add(ta_real.setup("ta real part", 2, -3, 3));
-	parametersPanel.add(ta_imag.setup("ta imaginary part", 0, -3, 3));
+	parametersPanel.add(ta_imag.setup("ta imaginary part", -0, -3, 3));
 	parametersPanel.add(tb_real.setup("tb real part", 2, -3, 3));
 	parametersPanel.add(tb_imag.setup("tb imaginary part", 0, -3, 3));
-	parametersPanel.add(max_depth.setup("Maximum Depth", 13, 2, 300));
-	parametersPanel.add(epsilon.setup("Epsilon", 0.01, 0.001, 0.1));
+	parametersPanel.add(max_depth.setup("Maximum Depth", 10, 2, 3000));
+	parametersPanel.add(epsilon.setup("Epsilon", 0.1, 0.0001, 0.01));
 }
 
 void ofApp::draw(){
+	ofBackground(0);
 	parametersPanel.draw();
 	const complex<float> i(0.0, 1.0);
 	complex<float> ta = (float)ta_real + (float)ta_imag * i;
