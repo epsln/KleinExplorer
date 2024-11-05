@@ -38,9 +38,11 @@ complex<float> MobiusT::compute_fixed_points(){
 	if (c == (complex<float>)0 && a !=  d){
 		return -b/(a - d);
 	}
-	complex<float> z0 = (a - d - sqrt(pow(a + d, 2) + float(4) * b * c))/(float(2) * c); 
-	ofLog(OF_LOG_VERBOSE, "z0: %f %f\n", real(z0), imag(z0)); 
-	return z0;
+	complex<float> k = pow(((a + d) + sqrt(pow((a + d), 2) - (float)4))/(float)2, 2);
+	if (abs(k) > 1)
+		return (a - d + sqrt(pow(d - a, 2) + float(4) * b * c))/(float(2) * c); 
+	else
+		return (a - d - sqrt(pow(d - a, 2) + float(4) * b * c))/(float(2) * c); 
 }
 
 MobiusT MobiusT::inverse(){
