@@ -16,6 +16,6 @@ void cyclic_permutation(vector<int>& word, vector<int>& cyclic_perm, int shift){
 	//Compute a cyclic permutation for the input word
 	cyclic_perm.clear();
 	for (int i = 0; i < word.size(); i++){
-		cyclic_perm.push_back(word[(i + shift) % word.size()]);
+		cyclic_perm.push_back(word[mod((i + shift) , word.size())]);
 	}
 }
