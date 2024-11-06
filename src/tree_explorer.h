@@ -42,6 +42,8 @@ class KleinExplorer{
 		void compute();
 		void print_word();
 		void set_klein_model(KleinFractalModel kfm);
+		void set_compute_params(int max_d, float epsilon);
+		void set_coords(complex<float> center, float zoom);
 };
 
 #endif

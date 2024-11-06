@@ -205,3 +205,8 @@ void KleinExplorer::set_klein_model(KleinFractalModel kfm){
 	memcpy(generators, kfm.generators, sizeof(MobiusT) * 4);
 	fixedPoints = kfm.fixedPoints;
 }
+
+void KleinExplorer::set_coords(complex<float> center, float zoom){
+	center = center;
+	zoom = zoom;
+}
