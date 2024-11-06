@@ -3,6 +3,8 @@
 #include "ofMain.h"
 #include "ofxGui.h"
 
+#include "tree_explorer.h"
+
 class ofApp : public ofBaseApp{
 
 	public:
@@ -14,7 +16,15 @@ class ofApp : public ofBaseApp{
 		ofxFloatSlider tb_imag;
 		ofxIntField max_depth;
 		ofxFloatField epsilon;
+
 		ofxPanel parametersPanel;
+		
+		
+		complex<float> ta, tb;
+		MobiusT generators[4];
+		Fraction spe_fract;
+		KleinFractalModel kfm;
+		KleinExplorer ke;
 
 		//  MARK: - ofBaseApp interface boilerplate:
 		//  void update() override;
