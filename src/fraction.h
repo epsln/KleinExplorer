@@ -4,6 +4,7 @@
 class Fraction {
 	public:
 		int p, q;
+		Fraction();
 		Fraction(int p_, int q_);
 		Fraction add(Fraction f);
 		Fraction sub(Fraction f);

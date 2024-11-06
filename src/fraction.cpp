@@ -1,5 +1,7 @@
 #include "fraction.h"
 
+Fraction::Fraction(){}
+
 Fraction::Fraction(int p_, int q_){
 	p = p_;
 	q = q_;
