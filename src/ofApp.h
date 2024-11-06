@@ -28,6 +28,9 @@ class ofApp : public ofBaseApp{
 		KleinFractalModel kfm;
 		KleinExplorer ke;
 
+		complex<float> center = 0;;
+		float zoom = 1;
+
 		//  MARK: - ofBaseApp interface boilerplate:
 		//  void update() override;
 		void keyPressed(int key) override;
