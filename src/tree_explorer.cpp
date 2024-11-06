@@ -75,13 +75,20 @@ int KleinExplorer::branch_terminated(){
 		p = words[level].apply(fp);
 		comp_p = words[level].apply(comp_fp);
 
-		//TODO: Implement me (using of methods)
-		float x0 = ofMap(real(p), -1, 1, 0, 1080);
-		float y0 = ofMap(imag(p), -1, 1, 0, 1080);
-		float x1 = ofMap(real(comp_p), -1, 1, 0, 1080);
-		float y1 = ofMap(imag(comp_p), -1, 1, 0, 1080);
-		ofSetColor(225);
-		ofSetLineWidth(1);
+		float aspect_ratio = max(ofGetWidth(), ofGetHeight()) * 1.0/min(ofGetWidth(), ofGetHeight());
+		float x0, y0, x1, y1;
+		if (ofGetWidth() > ofGetHeight()){
+			x0 = ofMap(real(p), -1 * aspect_ratio, 1 * aspect_ratio, 0, ofGetWidth());
+			y0 = ofMap(imag(p), -1, 1, 0, ofGetHeight());
+			x1 = ofMap(real(comp_p), -1 * aspect_ratio, 1 * aspect_ratio, 0, ofGetWidth());
+			y1 = ofMap(imag(comp_p), -1, 1, 0, ofGetHeight());
+		}
+		else{
+			x0 = ofMap(real(p), -1, 1, 0, ofGetWidth());
+			y0 = ofMap(imag(p), -1 * aspect_ratio, 1 * aspect_ratio, 0, ofGetHeight());
+			x1 = ofMap(real(comp_p), -1, 1, 0, ofGetWidth());
+			y1 = ofMap(imag(comp_p), -1 * aspect_ratio, 1 * aspect_ratio, 0, ofGetHeight());
+		}
 		ofLog(OF_LOG_VERBOSE, "Point %f %f", x0, y0); 
 		ofDrawLine(x0, y0, x1, y1);
 	}
