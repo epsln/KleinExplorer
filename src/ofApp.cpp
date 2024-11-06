@@ -40,3 +40,21 @@ void ofApp::draw(){
 	}
 	parametersPanel.draw();
 }
+
+void ofApp::keyPressed(int key){
+	float zoom = 1;
+	complex<float> center = 0;
+	if (key == "w")
+		center += i * zoom * 0.1;
+	if (key == "a")
+		center -= 1 * zoom * 0.1;
+	if (key == "s")
+		center -= i * zoom * 0.1;
+	if (key == "d")
+		center -= 1 * zoom * 0.1;
+	if (key == "q")
+		zoom -= .1;
+	if (key == "e")
+		zoom += .1;
+	ke.set_coords(center, zoom);
+}
