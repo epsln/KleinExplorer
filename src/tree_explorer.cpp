@@ -78,16 +78,16 @@ int KleinExplorer::branch_terminated(){
 		float aspect_ratio = max(ofGetWidth(), ofGetHeight()) * 1.0/min(ofGetWidth(), ofGetHeight());
 		float x0, y0, x1, y1;
 		if (ofGetWidth() > ofGetHeight()){
-			x0 = ofMap(real(p), -1 * aspect_ratio, 1 * aspect_ratio, 0, ofGetWidth());
-			y0 = ofMap(imag(p), -1, 1, 0, ofGetHeight());
-			x1 = ofMap(real(comp_p), -1 * aspect_ratio, 1 * aspect_ratio, 0, ofGetWidth());
-			y1 = ofMap(imag(comp_p), -1, 1, 0, ofGetHeight());
+			x0 = ofMap(real(p), viewbox_xmin * aspect_ratio, viewbox_xmax * aspect_ratio, 0, ofGetWidth());
+			y0 = ofMap(imag(p), viewbox_ymin, viewbox_ymax, 0, ofGetHeight());
+			x1 = ofMap(real(comp_p), viewbox_xmin * aspect_ratio, viewbox_xmax * aspect_ratio, 0, ofGetWidth());
+			y1 = ofMap(imag(comp_p), viewbox_ymin, viewbox_ymax, 0, ofGetHeight());
 		}
 		else{
-			x0 = ofMap(real(p), -1, 1, 0, ofGetWidth());
-			y0 = ofMap(imag(p), -1 * aspect_ratio, 1 * aspect_ratio, 0, ofGetHeight());
-			x1 = ofMap(real(comp_p), -1, 1, 0, ofGetWidth());
-			y1 = ofMap(imag(comp_p), -1 * aspect_ratio, 1 * aspect_ratio, 0, ofGetHeight());
+			x0 = ofMap(real(p), viewbox_xmin, viewbox_xmax, 0, ofGetWidth());
+			y0 = ofMap(imag(p), viewbox_ymin * aspect_ratio, viewbox_ymax * aspect_ratio, 0, ofGetHeight());
+			x1 = ofMap(real(comp_p), viewbox_xmin, viewbox_xmax, 0, ofGetWidth());
+			y1 = ofMap(imag(comp_p), viewbox_ymin * aspect_ratio, viewbox_ymax * aspect_ratio, 0, ofGetHeight());
 		}
 		ofLog(OF_LOG_VERBOSE, "Point %f %f", x0, y0); 
 		ofDrawLine(x0, y0, x1, y1);
@@ -207,6 +207,8 @@ void KleinExplorer::set_klein_model(KleinFractalModel kfm){
 }
 
 void KleinExplorer::set_coords(complex<float> center, float zoom){
-	center = center;
-	zoom = zoom;
+	viewbox_xmin = real(center) - zoom;
+	viewbox_xmax = real(center) + zoom;
+	viewbox_ymin = imag(center) - zoom;
+	viewbox_ymax = imag(center) + zoom;
 }

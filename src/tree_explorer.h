@@ -27,6 +27,11 @@ class KleinExplorer{
 	vector<MobiusT> words;
 	vector<vector<complex<float>>> fixedPoints;
 
+	float viewbox_xmin = -1;
+	float viewbox_xmax =  1;
+	float viewbox_ymin = -1;
+	float viewbox_ymax =  1;
+
 	public:
 		KleinExplorer();
 		KleinExplorer(int max_d, float epsilon, KleinFractalModel kfm);
