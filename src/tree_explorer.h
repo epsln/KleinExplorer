@@ -28,6 +28,7 @@ class KleinExplorer{
 	vector<vector<complex<float>>> fixedPoints;
 
 	public:
+		KleinExplorer();
 		KleinExplorer(int max_d, float epsilon, KleinFractalModel kfm);
 		void set_next_state(int idx_gen);
 		int get_next_state(int idx_gen);
@@ -40,6 +41,7 @@ class KleinExplorer{
 		void forward_move();
 		void compute();
 		void print_word();
+		void set_klein_model(KleinFractalModel kfm);
 };
 
 #endif
