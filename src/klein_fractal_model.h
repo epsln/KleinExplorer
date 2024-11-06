@@ -14,6 +14,7 @@ class KleinFractalModel{
 		MobiusT generators[4];
 		vector<vector<complex<float>>> fixedPoints;
 		KleinFractalModel(MobiusT gen[4], Fraction spe_fract);	
+		KleinFractalModel();	
 		
 	private:
 		void compute_fixed_points();
