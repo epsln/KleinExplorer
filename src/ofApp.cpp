@@ -17,7 +17,6 @@ void ofApp::setup(){
 	const complex<float> i(0.0, 1.0);
 	complex<float> ta = (float)ta_real + (float)ta_imag * i;
 	complex<float> tb = (float)tb_real + (float)tb_imag * i;
-	generators[4];
 	grandmaRecipe(ta, tb, generators);
 	spe_fract = Fraction(1, 2);
 
