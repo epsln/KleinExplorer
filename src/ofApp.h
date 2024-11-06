@@ -16,9 +16,11 @@ class ofApp : public ofBaseApp{
 		ofxFloatSlider tb_imag;
 		ofxIntField max_depth;
 		ofxFloatField epsilon;
+		ofxButton saveImg;
 
 		ofxPanel parametersPanel;
 		
+		ofImage img;
 		
 		complex<float> ta, tb;
 		MobiusT generators[4];

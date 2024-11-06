@@ -12,6 +12,7 @@ void ofApp::setup(){
 	parametersPanel.add(tb_imag.setup("tb imaginary part", 0, -3, 3));
 	parametersPanel.add(max_depth.setup("Maximum Depth", 10, 2, 3000));
 	parametersPanel.add(epsilon.setup("Epsilon", 0.1, 0.0001, 0.01));
+	parametersPanel.add(saveImg.setup("Save Image"));
 
 	const complex<float> i(0.0, 1.0);
 	complex<float> ta = (float)ta_real + (float)ta_imag * i;
@@ -25,7 +26,6 @@ void ofApp::setup(){
 }
 
 void ofApp::draw(){
-	ofSetLogLevel(OF_LOG_VERBOSE);
 	const complex<float> i(0.0, 1.0);
 	ta = (float)ta_real + (float)ta_imag * i;
 	tb = (float)tb_real + (float)tb_imag * i;
@@ -35,5 +35,9 @@ void ofApp::draw(){
 	kfm = KleinFractalModel(generators, spe_fract);
 	ke.set_klein_model(kfm);
 	ke.compute();
+	if (saveImg){
+		img.grabScreen(0,0,1080,1080);
+		img.save("img.jpg");
+	}
 	parametersPanel.draw();
 }
