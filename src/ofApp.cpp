@@ -35,7 +35,7 @@ void ofApp::draw(){
 	ke.set_klein_model(kfm);
 	ke.compute();
 	if (saveImg){
-		img.grabScreen(0,0,1080,1080);
+		img.grabScreen(0,0,ofGetWidth(),ofGetHeight());
 		img.save("img.jpg");
 	}
 	parametersPanel.draw();
