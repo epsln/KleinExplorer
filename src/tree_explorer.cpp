@@ -187,16 +187,8 @@ void KleinExplorer::print_word(){
 }
 
 KleinExplorer::KleinExplorer(int max_d, float eps, KleinFractalModel kfm){
-	max_depth = max_d;
-	epsilon = eps; 
 	set_klein_model(kfm);
-	tag.reserve(max_d);
-	state.reserve(max_d);
-	words.reserve(max_d);
-	fill(tag.begin(), tag.end(), 0);//Probably will screw things up
-	fill(state.begin(), state.end(), 0);
-	MobiusT defaultWord = MobiusT(0,0,0,0);
-	fill(words.begin(), words.end(), defaultWord);
+	set_compute_params(max_d, eps);
 }
 
 KleinExplorer::KleinExplorer(){}
@@ -204,6 +196,18 @@ KleinExplorer::KleinExplorer(){}
 void KleinExplorer::set_klein_model(KleinFractalModel kfm){
 	memcpy(generators, kfm.generators, sizeof(MobiusT) * 4);
 	fixedPoints = kfm.fixedPoints;
+}
+
+void KleinExplorer::set_compute_params(int max_d, float eps){
+	max_depth = max_d;
+	epsilon = eps; 
+	tag.reserve(max_d);
+	state.reserve(max_d);
+	words.reserve(max_d);
+	fill(tag.begin(), tag.end(), 0);//Probably will screw things up
+	fill(state.begin(), state.end(), 0);
+	MobiusT defaultWord = MobiusT(0,0,0,0);
+	fill(words.begin(), words.end(), defaultWord);
 }
 
 void KleinExplorer::set_coords(complex<float> center, float zoom){

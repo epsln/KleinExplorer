@@ -34,6 +34,7 @@ void ofApp::draw(){
 
 	kfm = KleinFractalModel(generators, spe_fract);
 	ke.set_klein_model(kfm);
+	ke.set_compute_params(max_depth, epsilon);
 	ke.compute();
 	if (saveImg){
 		img.grabScreen(0,0,ofGetWidth(),ofGetHeight());
