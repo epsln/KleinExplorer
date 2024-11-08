@@ -11,6 +11,7 @@ class Fraction {
 		Fraction mul(Fraction f);
 		Fraction div(Fraction f);
 		Fraction cailey_add(Fraction f);
+		void simplify();
 };
 
 #endif

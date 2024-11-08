@@ -1,4 +1,5 @@
 #include "fraction.h"
+#include "math_utils.h"
 
 Fraction::Fraction(){}
 
@@ -25,4 +26,9 @@ Fraction Fraction::div(Fraction f){
 
 Fraction Fraction::cailey_add(Fraction f){
 	return Fraction(p + f.p, q + f.q);
+}
+
+Fraction simplify_fract(Fraction a){
+	int divisor = gcd(a.p, a.q);	
+	return (Fraction) {a.p/divisor, a.q/divisor};
 }
