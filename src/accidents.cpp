@@ -155,35 +155,6 @@ void makeContinuedFraction(int lengthArr, float realNum, vector<Fraction> fracti
 	}
 }
 
-void nextPQ(int* pP, int* pQ, int denom){
-	float p1, p2, r;
-	float q1, q2, s;
-	int sign = -1;
-	float a, k, temp0, temp1;
-	p1 = 0;
-	q1 = 1;
-	p2 = 1;
-	q2 = 0;
-	r = *pP;
-	s = *pQ;
-	while (s != 0){
-		a = floor((float)r/s);
-		temp0 = s;
-		s = r - a*s;  
-		r = temp0;
-		temp0 = p2;
-		temp1 = q2;
-		p2 = a*p2 + p1;
-		q2 = a*q2 + q1;
-		p1 = temp0;
-		q1 = temp1;
-		sign = -sign;
-	}
-	k = floor(((float)denom - sign*q1)/denom);
-	*pP = k * (*pP) + sign * p1;
-	*pQ = k * (*pQ) + sign * q1; 
-}
-
 void getSpecialWordFromFract(vector<int> &specialWord, Fraction fraction){
 	int num = 1; 
 	int i = 0;
