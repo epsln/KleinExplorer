@@ -19,3 +19,14 @@ void cyclic_permutation(vector<int>& word, vector<int>& cyclic_perm, int shift){
 		cyclic_perm.push_back(word[mod((i + shift) , word.size())]);
 	}
 }
+
+int gcd(int a, int b){
+	int temp;
+	while (b != 0){
+		temp = a % b;
+
+		a = b;
+		b = temp;
+	}
+	return a;
+}
