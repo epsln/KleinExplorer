@@ -202,16 +202,17 @@ complex<float> traceEqn(Fraction fraction, complex<float> mu){
 }
 
 void newtonSolver(complex<float> *pz0, Fraction fraction){
-	const complex<float> i(0.0, 1.0);
-	int maxiter = 100000;
+	const complex<float> I(0.0, 1.0);
+	int maxiter = 10000;
 	complex<float> z = *pz0;
-	float epsilon = 1E-6;
+	float epsilon = 0.0001;
 	complex<float> realVal, imagVal, deriv;
 	complex<float> traceEqVal;
+	complex<float> b;
 
 	//Carefull, without a imaginary part, newton doesnt converge !
 	if (imag(*pz0) == 0)
-		*pz0 += i;
+		*pz0 += I;
 
 	if( isinf(imag(traceEqn(fraction, z))) || isnan(imag(traceEqn(fraction, z)))){
 		ofLog(OF_LOG_FATAL_ERROR, "Newton method failed! Getting infinity \n");
@@ -219,13 +220,14 @@ void newtonSolver(complex<float> *pz0, Fraction fraction){
 	}
 	for (int i = 0; i < maxiter; i++){
 		//Compute the complex derivate using a simple finite differences scheme on real and imag axis
-		realVal = (traceEqn(fraction, z + epsilon)     - traceEqn(fraction, z - epsilon))/(2*epsilon);
-		imagVal = (traceEqn(fraction, z + epsilon * i) - traceEqn(fraction, z - epsilon * i))/(2 * epsilon * i);
+		realVal = (traceEqn(fraction, z + epsilon)     - traceEqn(fraction, z - epsilon))/((float)2 * epsilon);
+		imagVal = (traceEqn(fraction, z + epsilon * I) - traceEqn(fraction, z - epsilon * I))/((float)2 * epsilon * I);
 		deriv = (realVal + imagVal)/(float)2;
+		
 		//Update the guess 	
 		traceEqVal = traceEqn(fraction, z);
 		z = z - traceEqVal/deriv;
-		if (abs(traceEqVal) <= 1E-5 && abs(z - *pz0) <= 1E-4)
+		if (abs(traceEqVal) <= 1E-4)
 			return;
 		else
 			*pz0 = z;
@@ -234,7 +236,7 @@ void newtonSolver(complex<float> *pz0, Fraction fraction){
 	exit(-1);
 }
 
-void getGeneratorsFromFraction(KleinFractalModel &kfm, Fraction f){
+KleinFractalModel getGeneratorsFromFraction(Fraction f){
 	const complex<float> i(0.0, 1.0);
 	vector<int> specialWord;
 	complex<float> z;
@@ -243,5 +245,5 @@ void getGeneratorsFromFraction(KleinFractalModel &kfm, Fraction f){
 	getTraceFromFract(pz, f);
 	MobiusT generators[4];
 	grandmaRecipe(-i * z, 2, generators);
-	KleinFractalModel(generators, f);
+	return KleinFractalModel(generators, f);
 }

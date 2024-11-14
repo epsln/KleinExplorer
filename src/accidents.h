@@ -16,7 +16,7 @@ int makeContinuedFraction(int lengthAnim, float real, vector<Fraction> &fraction
 
 void getTraceFromFract(complex<float> *pz0, Fraction f);
 void getSpecialWordFromFract(vector<int> &specialWord, Fraction f);
-void getGeneratorsFromFraction(KleinFractalModel& kfm, Fraction f);
+KleinFractalModel getGeneratorsFromFraction(Fraction f);
 
 void newtonSolver(complex<float> *pZ0, Fraction f);
 #endif
