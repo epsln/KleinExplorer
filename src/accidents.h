@@ -5,6 +5,7 @@
 #include <cmath>
 #include <vector>
 
+#include "klein_fractal_model.h"
 #include "fraction.h"
 
 complex<float> tracePoly(Fraction f, complex<float> ta, complex<float> tB, complex<float> taB);
@@ -15,6 +16,7 @@ int makeContinuedFraction(int lengthAnim, float real, vector<Fraction> &fraction
 
 void getTraceFromFract(complex<float> *pz0, Fraction f);
 void getSpecialWordFromFract(vector<int> &specialWord, Fraction f);
+void getGeneratorsFromFraction(KleinFractalModel& kfm, Fraction f);
 
 void newtonSolver(complex<float> *pZ0, Fraction f);
 #endif

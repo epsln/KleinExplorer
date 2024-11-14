@@ -5,6 +5,8 @@
 #include "ofMain.h"
 
 #include "accidents.h"
+#include "recipes.h"
+#include "klein_fractal_model.h"
 #include "fraction.h"
 
 using namespace std;
@@ -230,4 +232,16 @@ void newtonSolver(complex<float> *pz0, Fraction fraction){
 	}
 	ofLog(OF_LOG_FATAL_ERROR, "Newton method failed! Not converging after %d iterations. Last value: %f %f\n", maxiter, real(z), imag(z));
 	exit(-1);
+}
+
+void getGeneratorsFromFraction(KleinFractalModel &kfm, Fraction f){
+	const complex<float> i(0.0, 1.0);
+	vector<int> specialWord;
+	complex<float> z;
+	complex<float> *pz = &z;
+	getSpecialWordFromFract(specialWord, f);
+	getTraceFromFract(pz, f);
+	MobiusT generators[4];
+	grandmaRecipe(-i * z, 2, generators);
+	KleinFractalModel(generators, f);
 }
