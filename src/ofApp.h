@@ -17,6 +17,7 @@ class ofApp : public ofBaseApp{
 		ofxIntField max_depth;
 		ofxFloatField epsilon;
 		ofxButton saveImg;
+		ofxButton computeImg;
 
 		ofxPanel parametersPanel;
 		
