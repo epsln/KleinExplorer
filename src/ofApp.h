@@ -15,6 +15,8 @@ class ofApp : public ofBaseApp{
     ofxDatGuiFolder* grandma_folder, *grandma_special_folder, *maskit_folder, *jorgensen_folder;
 		
 		ofImage img;
+
+		int currentRecipeIndex = 0;
 		
 		complex<float> ta, tb, tab;
 		MobiusT generators[4];
@@ -27,10 +29,12 @@ class ofApp : public ofBaseApp{
 
 		int max_d = 10;
 		float epsilon = .1;
+		
 
 		void keyPressed(int key) override;
     void onButtonEvent(ofxDatGuiButtonEvent e);
     void on2dPadEvent(ofxDatGui2dPadEvent e);
     void onSliderEvent(ofxDatGuiSliderEvent e);
+    void onDropdownEvent(ofxDatGuiDropdownEvent e);
 };
 

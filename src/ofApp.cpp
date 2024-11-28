@@ -7,46 +7,25 @@
 void ofApp::setup(){
 	ofRectangle bounds(-3, -3, 6, 6); 
 	menu = new ofxDatGui( ofxDatGuiAnchor::TOP_LEFT );
-
-  grandma_folder = menu -> addFolder("Grandma Recipe", ofColor::white); 
-	grandma_folder->addSlider("ta (real part)", -3, 3);
-	grandma_folder->addSlider("ta (imag part)", -3, 3);
-	grandma_folder->addSlider("tb (real part)", -3, 3);
-	grandma_folder->addSlider("tb (imag part)", -3, 3);
-	grandma_folder->addButton("Compute !");
-  grandma_folder->onButtonEvent(this, &ofApp::onButtonEvent);
-  grandma_folder->onSliderEvent(this, &ofApp::onSliderEvent);
 	
-  grandma_special_folder = menu -> addFolder("Grandma Special Recipe", ofColor::white); 
-	grandma_special_folder->addSlider("ta (real part)", -3, 3);
-	grandma_special_folder->addSlider("ta (imag part)", -3, 3);
-	grandma_special_folder->addSlider("tb (real part)", -3, 3);
-	grandma_special_folder->addSlider("tb (imag part)", -3, 3);
-	grandma_special_folder->addSlider("taB (real part)", -3, 3);
-	grandma_special_folder->addSlider("taB (imag part)", -3, 3);
-	grandma_special_folder->addButton("Compute !");
-  grandma_special_folder->onButtonEvent(this, &ofApp::onButtonEvent);
-  grandma_special_folder->onSliderEvent(this, &ofApp::onSliderEvent);
+	vector<string> recipes = {"Grandma Recipe", "Grandma Special Recipe",  "Maskit Recipe", "Jorgensen Recipe"};
+  menu -> addDropdown("Recipe", recipes); 
 
-  maskit_folder = menu -> addFolder("Maskit Recipe", ofColor::white); 
-	maskit_folder->addSlider("ta (real part)", -3, 3);
-	maskit_folder->addSlider("ta (imag part)", -3, 3);
-	maskit_folder->addButton("Compute !");
-  maskit_folder->onButtonEvent(this, &ofApp::onButtonEvent);
-  maskit_folder->onSliderEvent(this, &ofApp::onSliderEvent);
-
-  jorgensen_folder = menu -> addFolder("Jorgensen Recipe", ofColor::white); 
-	jorgensen_folder->addSlider("ta (real part)", -3, 3);
-	jorgensen_folder->addSlider("ta (imag part)", -3, 3);
-	jorgensen_folder->addSlider("tb (real part)", -3, 3);
-	jorgensen_folder->addButton("Compute !");
-  jorgensen_folder->onButtonEvent(this, &ofApp::onButtonEvent);
-  jorgensen_folder->onSliderEvent(this, &ofApp::onSliderEvent);
+	menu -> addSlider("ta (real part)", -3, 3);
+	menu -> addSlider("ta (imag part)", -3, 3);
+	menu -> addSlider("tb (real part)", -3, 3);
+	menu -> addSlider("tb (imag part)", -3, 3);
+	menu -> addSlider("taB (real part)", -3, 3);
+	menu -> addSlider("taB (imag part)", -3, 3);
 
 	menu -> addSlider("Maximum Depth", 5, 1000);
 	menu -> addSlider("Epsilon", 0.001, 0.1);
-	menu ->addButton("Save Image");
-	grandma_folder->expand();
+	menu -> addButton("Compute !");
+	menu -> addButton("Save Image");
+
+  menu -> onSliderEvent(this, &ofApp::onSliderEvent);
+  menu->onButtonEvent(this, &ofApp::onButtonEvent);
+  menu->onDropdownEvent(this, &ofApp::onDropdownEvent);
 
 
 	const complex<float> i(0.0, 1.0);
@@ -59,11 +38,10 @@ void ofApp::setup(){
 }
 
 void ofApp::update(){
-	grandma_folder -> update();
 }
+
 void ofApp::draw(){
 	img.draw(0, 0);
-	grandma_folder -> draw();
 }
 
 void ofApp::keyPressed(int key){
@@ -85,32 +63,21 @@ void ofApp::keyPressed(int key){
 }
 
 void ofApp::onButtonEvent(ofxDatGuiButtonEvent e){
-	if (e.target == menu -> getButton("compute !", "grandma recipe")){
-		grandmaRecipe(ta, tb, generators);
-		spe_fract = Fraction(1, 2);
-		kfm = KleinFractalModel(generators, spe_fract);
-		ke.set_klein_model(kfm);
-		ke.compute();
-		img.grabScreen(0,0,ofGetWidth(),ofGetHeight());
-	}
-	if (e.target == menu -> getButton("compute !", "grandma special recipe")){
-		grandmaSpecialRecipe(ta, tb, tab, generators);
-		spe_fract = Fraction(1, 2);
-		kfm = KleinFractalModel(generators, spe_fract);
-		ke.set_klein_model(kfm);
-		ke.compute();
-		img.grabScreen(0,0,ofGetWidth(),ofGetHeight());
-	}
-	if (e.target == menu -> getButton("compute !", "maskit recipe")){
-		maskitRecipe(ta, generators);
-		spe_fract = Fraction(1, 2);
-		kfm = KleinFractalModel(generators, spe_fract);
-		ke.set_klein_model(kfm);
-		ke.compute();
-		img.grabScreen(0,0,ofGetWidth(),ofGetHeight());
-	}
-	if (e.target == menu -> getButton("compute !", "jorgensen recipe")){
-		jorgensen(ta, tb, generators);
+	if (e.target -> is("compute !")){
+		switch(currentRecipeIndex){
+			case 0:
+				grandmaRecipe(ta, tb, generators);
+				break;
+			case 1:
+				grandmaSpecialRecipe(ta, tb, tab, generators);
+				break;
+			case 2:
+				jorgensen(ta, tb, generators);
+				break;
+			case 3:
+				maskitRecipe(ta, generators);
+				break;
+		}
 		spe_fract = Fraction(1, 2);
 		kfm = KleinFractalModel(generators, spe_fract);
 		ke.set_klein_model(kfm);
@@ -119,6 +86,36 @@ void ofApp::onButtonEvent(ofxDatGuiButtonEvent e){
 	}
 	else if (e.target->is("save image")){
 		img.save("img.jpg");
+	}
+}
+
+void ofApp::onDropdownEvent(ofxDatGuiDropdownEvent e){
+	currentRecipeIndex = e.child;
+	switch(currentRecipeIndex){
+		case 0:
+			menu -> getSlider("tb (real part)") -> setVisible(true);
+			menu -> getSlider("tb (imag part)") -> setVisible(true);
+			menu -> getSlider("tab (real part)") -> setVisible(false);
+			menu -> getSlider("tab (imag part)") -> setVisible(false);
+			break;
+		case 1:
+			menu -> getSlider("tb (real part)") -> setVisible(true);
+			menu -> getSlider("tb (imag part)") -> setVisible(true);
+			menu -> getSlider("tab (real part)") -> setVisible(true);
+			menu -> getSlider("tab (imag part)") -> setVisible(true);
+			break;
+		case 2:
+			menu -> getSlider("tb (real part)") -> setVisible(false);
+			menu -> getSlider("tb (imag part)") -> setVisible(false);
+			menu -> getSlider("tab (real part)") -> setVisible(false);
+			menu -> getSlider("tab (imag part)") -> setVisible(false);
+			break;
+		case 3:
+			menu -> getSlider("tb (real part)") -> setVisible(true);
+			menu -> getSlider("tb (imag part)") -> setVisible(true);
+			menu -> getSlider("tab (real part)") -> setVisible(false);
+			menu -> getSlider("tab (imag part)") -> setVisible(false);
+			break;
 	}
 }
 
@@ -149,6 +146,10 @@ void ofApp::onSliderEvent(ofxDatGuiSliderEvent e){
 		tb = e.target->getValue() + i * imag(ta);
 	if (e.target->is("tb (imag part)"))
 		tb = e.target->getValue() * i + real(ta);
+	if (e.target->is("tab (real part)"))
+		tab = e.target->getValue() + i * imag(ta);
+	if (e.target->is("tab (imag part)"))
+		tab = e.target->getValue() * i + real(ta);
 
 	ke.set_compute_params(max_d, epsilon);
 }
