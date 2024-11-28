@@ -10,11 +10,13 @@ class ofApp : public ofBaseApp{
 	public:
 		void setup();
 		void draw();
+		void update();
     ofxDatGui* menu;
+    ofxDatGuiFolder* grandma_folder, *grandma_special_folder, *maskit_folder, *jorgensen_folder;
 		
 		ofImage img;
 		
-		complex<float> ta, tb;
+		complex<float> ta, tb, tab;
 		MobiusT generators[4];
 		Fraction spe_fract;
 		KleinFractalModel kfm;
