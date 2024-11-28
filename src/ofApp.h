@@ -10,7 +10,6 @@ class ofApp : public ofBaseApp{
 	public:
 		void setup();
 		void draw();
-		void update();
     ofxDatGui* menu;
     ofxDatGuiFolder* grandma_folder, *grandma_special_folder, *maskit_folder, *jorgensen_folder;
 		
@@ -33,7 +32,6 @@ class ofApp : public ofBaseApp{
 
 		void keyPressed(int key) override;
     void onButtonEvent(ofxDatGuiButtonEvent e);
-    void on2dPadEvent(ofxDatGui2dPadEvent e);
     void onSliderEvent(ofxDatGuiSliderEvent e);
     void onDropdownEvent(ofxDatGuiDropdownEvent e);
 };

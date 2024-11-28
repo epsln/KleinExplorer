@@ -37,9 +37,6 @@ void ofApp::setup(){
 
 }
 
-void ofApp::update(){
-}
-
 void ofApp::draw(){
 	img.draw(0, 0);
 }
@@ -117,19 +114,6 @@ void ofApp::onDropdownEvent(ofxDatGuiDropdownEvent e){
 			menu -> getSlider("tab (imag part)") -> setVisible(false);
 			break;
 	}
-}
-
-void ofApp::on2dPadEvent(ofxDatGui2dPadEvent e){
-	const complex<float> i(0.0, 1.0);
-	if (e.target->is("ta"))
-		ta = (float)e.x + (float)e.y * i;
-	
-	if (e.target->is("tb"))
-		tb = (float)e.x + (float)e.y * i;
-
-	if (e.target->is("tab"))
-		tab = (float)e.x + (float)e.y * i;
-
 }
 
 void ofApp::onSliderEvent(ofxDatGuiSliderEvent e){
