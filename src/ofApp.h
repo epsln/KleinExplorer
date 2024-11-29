@@ -36,5 +36,6 @@ class ofApp : public ofBaseApp{
     void onSliderEvent(ofxDatGuiSliderEvent e);
     void onToggleEvent(ofxDatGuiToggleEvent e);
     void onDropdownEvent(ofxDatGuiDropdownEvent e);
+    void onTextInputEvent(ofxDatGuiTextInputEvent e);
 };
 

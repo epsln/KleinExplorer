@@ -1,3 +1,4 @@
+#include <string> 
 #include "ofApp.h"
 #include "recipes.h"
 #include "Mobius.h"
@@ -6,9 +7,9 @@
 
 void ofApp::setup(){
 	menu = new ofxDatGui( ofxDatGuiAnchor::TOP_LEFT );
-	
+
 	vector<string> recipes = {"Grandma Recipe", "Grandma Special Recipe",  "Maskit Recipe", "Jorgensen Recipe"};
-  menu -> addDropdown("Recipe", recipes) -> select(0); 
+	menu -> addDropdown("Recipe", recipes) -> select(0); 
 
 	menu -> addSlider("ta (real part)", -3, 3, 2);
 	menu -> addSlider("ta (imag part)", -3, 3, 0);
@@ -17,24 +18,26 @@ void ofApp::setup(){
 	menu -> addSlider("taB (real part)", -3, 3) -> setVisible(false);
 	menu -> addSlider("taB (imag part)", -3, 3) -> setVisible(false);
 
+	menu -> addTextInput("Special Fraction Numerator", "1");
+	menu -> addTextInput("Special Fraction Denominator", "1");
 	menu -> addSlider("Maximum Depth", 5, 1000, max_d);
 	menu -> addSlider("Epsilon", 0.001, 0.1, epsilon);
 	menu -> addToggle("Real Time Mode");
 	menu -> addButton("Save Image");
 	menu -> addButton("Compute !");
 
-  menu -> onSliderEvent(this, &ofApp::onSliderEvent);
-  menu -> onButtonEvent(this, &ofApp::onButtonEvent);
-  menu -> onToggleEvent(this, &ofApp::onToggleEvent);
-  menu -> onDropdownEvent(this, &ofApp::onDropdownEvent);
-
+	menu -> onSliderEvent(this, &ofApp::onSliderEvent);
+	menu -> onButtonEvent(this, &ofApp::onButtonEvent);
+	menu -> onToggleEvent(this, &ofApp::onToggleEvent);
+	menu -> onDropdownEvent(this, &ofApp::onDropdownEvent);
+	menu -> onTextInputEvent(this, &ofApp::onTextInputEvent);
 
 
 	const complex<float> i(0.0, 1.0);
-	spe_fract = Fraction(1, 2);
+	spe_fract = Fraction(1, 1);
 
-	kfm = getGeneratorsFromFraction(spe_fract);
-  ke = KleinExplorer(10, .1, kfm);
+	//kfm = getGeneratorsFromFraction(spe_fract);
+	ke = KleinExplorer(10, .1, kfm);
 	img.grabScreen(0,0,ofGetWidth(),ofGetHeight());
 
 }
@@ -66,9 +69,32 @@ void ofApp::onToggleEvent(ofxDatGuiToggleEvent e){
 	menu -> getButton("compute !") -> setVisible(!e.checked);
 }
 
+bool isNumber(const std::string &s) {
+	return !s.empty() && std::all_of(s.begin(), s.end(), ::isdigit);
+}
+
+void ofApp::onTextInputEvent(ofxDatGuiTextInputEvent e){
+	if (e.target -> is("special fraction numerator") || e.target -> is("special fraction denominator")){
+		if (isNumber(e.text)){
+			int num = stoi(menu -> getTextInput("special fraction numerator") -> getText());
+			int den = stoi(menu -> getTextInput("special fraction denominator") -> getText());
+			spe_fract = Fraction(num, den);
+		}
+		else{
+			ofLog(OF_LOG_WARNING, "Invalid input, must be a number");
+			e.target -> setText("1");
+		}
+	}
+	if (realTimeMode){
+		kfm = KleinFractalModel(generators, spe_fract);
+		ke.set_klein_model(kfm);
+		ke.compute();
+		img.grabScreen(0,0,ofGetWidth(),ofGetHeight());
+	}
+}
+
 void ofApp::onButtonEvent(ofxDatGuiButtonEvent e){
 	if (e.target -> is("compute !")){
-		spe_fract = Fraction(1, 2);
 		kfm = KleinFractalModel(generators, spe_fract);
 		ke.set_klein_model(kfm);
 		ke.compute();
@@ -130,22 +156,21 @@ void ofApp::onSliderEvent(ofxDatGuiSliderEvent e){
 
 	ke.set_compute_params(max_d, epsilon);
 	switch(currentRecipeIndex){
-			case 0:
-				grandmaRecipe(ta, tb, generators);
-				break;
-			case 1:
-				grandmaSpecialRecipe(ta, tb, tab, generators);
-				break;
-			case 2:
-				jorgensen(ta, tb, generators);
-				break;
-			case 3:
-				maskitRecipe(ta, generators);
-				break;
+		case 0:
+			grandmaRecipe(ta, tb, generators);
+			break;
+		case 1:
+			grandmaSpecialRecipe(ta, tb, tab, generators);
+			break;
+		case 2:
+			jorgensen(ta, tb, generators);
+			break;
+		case 3:
+			maskitRecipe(ta, generators);
+			break;
 	}
 
 	if (realTimeMode){
-		spe_fract = Fraction(1, 2);
 		kfm = KleinFractalModel(generators, spe_fract);
 		ke.set_klein_model(kfm);
 		ke.compute();

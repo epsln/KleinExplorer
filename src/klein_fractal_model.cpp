@@ -51,6 +51,10 @@ void KleinFractalModel::compute_fixed_points(){
 	fixedPoints.push_back(vector<complex<float>> {0});
 	
 	special_words.push_back({0, 1, 2, 3});
+	special_words.push_back({0});
+	special_words.push_back({1});
+	special_words.push_back({2});
+	special_words.push_back({3});
 	special_words.push_back(special_word);
 	special_words.push_back(special_word_inv);
 	special_words.push_back({1, 0, 3, 2});
