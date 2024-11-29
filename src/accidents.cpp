@@ -236,14 +236,12 @@ void newtonSolver(complex<float> *pz0, Fraction fraction){
 	exit(-1);
 }
 
-KleinFractalModel getGeneratorsFromFraction(Fraction f){
+void getGeneratorsFromFraction(MobiusT* generators, Fraction f){
 	const complex<float> i(0.0, 1.0);
 	vector<int> specialWord;
 	complex<float> z;
 	complex<float> *pz = &z;
 	getSpecialWordFromFract(specialWord, f);
 	getTraceFromFract(pz, f);
-	MobiusT generators[4];
 	grandmaRecipe(-i * z, 2, generators);
-	return KleinFractalModel(generators, f);
 }

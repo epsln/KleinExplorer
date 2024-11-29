@@ -8,7 +8,7 @@
 void ofApp::setup(){
 	menu = new ofxDatGui( ofxDatGuiAnchor::TOP_LEFT );
 
-	vector<string> recipes = {"Grandma Recipe", "Grandma Special Recipe",  "Maskit Recipe", "Jorgensen Recipe"};
+	vector<string> recipes = {"Grandma Recipe", "Grandma Special Recipe",  "Maskit Recipe", "Jorgensen Recipe", "From Special Fraction"};
 	menu -> addDropdown("Recipe", recipes) -> select(0); 
 
 	menu -> addSlider("ta (real part)", -3, 3, 2);
@@ -18,8 +18,8 @@ void ofApp::setup(){
 	menu -> addSlider("taB (real part)", -3, 3) -> setVisible(false);
 	menu -> addSlider("taB (imag part)", -3, 3) -> setVisible(false);
 
-	menu -> addTextInput("Special Fraction Numerator", "1");
-	menu -> addTextInput("Special Fraction Denominator", "1");
+	menu -> addTextInput("Special Fraction Numerator", "1") -> setVisible(false);
+	menu -> addTextInput("Special Fraction Denominator", "1") -> setVisible(false);
 	menu -> addSlider("Maximum Depth", 5, 1000, max_d);
 	menu -> addSlider("Epsilon", 0.001, 0.1, epsilon);
 	menu -> addToggle("Real Time Mode");
@@ -107,31 +107,58 @@ void ofApp::onButtonEvent(ofxDatGuiButtonEvent e){
 
 void ofApp::onDropdownEvent(ofxDatGuiDropdownEvent e){
 	currentRecipeIndex = e.child;
+	//Bit disgusting...
 	switch(currentRecipeIndex){
 		case 0:
+			menu -> getSlider("ta (real part)") -> setVisible(true);
+			menu -> getSlider("ta (imag part)") -> setVisible(true);
 			menu -> getSlider("tb (real part)") -> setVisible(true);
 			menu -> getSlider("tb (imag part)") -> setVisible(true);
 			menu -> getSlider("tab (real part)") -> setVisible(false);
 			menu -> getSlider("tab (imag part)") -> setVisible(false);
+			menu -> getTextInput("special fraction numerator") -> setVisible(false);
+			menu -> getTextInput("special fraction denominator") -> setVisible(false);
 			break;
 		case 1:
+			menu -> getSlider("ta (real part)") -> setVisible(true);
+			menu -> getSlider("ta (imag part)") -> setVisible(true);
 			menu -> getSlider("tb (real part)") -> setVisible(true);
 			menu -> getSlider("tb (imag part)") -> setVisible(true);
 			menu -> getSlider("tab (real part)") -> setVisible(true);
 			menu -> getSlider("tab (imag part)") -> setVisible(true);
+			menu -> getTextInput("special fraction numerator") -> setVisible(false);
+			menu -> getTextInput("special fraction denominator") -> setVisible(false);
 			break;
 		case 2:
+			menu -> getSlider("ta (real part)") -> setVisible(true);
+			menu -> getSlider("ta (imag part)") -> setVisible(true);
 			menu -> getSlider("tb (real part)") -> setVisible(false);
 			menu -> getSlider("tb (imag part)") -> setVisible(false);
 			menu -> getSlider("tab (real part)") -> setVisible(false);
 			menu -> getSlider("tab (imag part)") -> setVisible(false);
+			menu -> getTextInput("special fraction numerator") -> setVisible(false);
+			menu -> getTextInput("special fraction denominator") -> setVisible(false);
 			break;
 		case 3:
+			menu -> getSlider("ta (real part)") -> setVisible(true);
+			menu -> getSlider("ta (imag part)") -> setVisible(true);
 			menu -> getSlider("tb (real part)") -> setVisible(true);
 			menu -> getSlider("tb (imag part)") -> setVisible(true);
 			menu -> getSlider("tab (real part)") -> setVisible(false);
 			menu -> getSlider("tab (imag part)") -> setVisible(false);
+			menu -> getTextInput("special fraction numerator") -> setVisible(true);
+			menu -> getTextInput("special fraction denominator") -> setVisible(true);
 			break;
+		case 4:
+			menu -> getSlider("ta (real part)") -> setVisible(false);
+			menu -> getSlider("ta (imag part)") -> setVisible(false);
+			menu -> getSlider("tb (real part)") -> setVisible(false);
+			menu -> getSlider("tb (imag part)") -> setVisible(false);
+			menu -> getSlider("tab (real part)") -> setVisible(false);
+			menu -> getSlider("tab (imag part)") -> setVisible(false);
+			menu -> getTextInput("special fraction numerator") -> setVisible(true);
+			menu -> getTextInput("special fraction denominator") -> setVisible(true);
+			
 	}
 }
 
@@ -167,6 +194,9 @@ void ofApp::onSliderEvent(ofxDatGuiSliderEvent e){
 			break;
 		case 3:
 			maskitRecipe(ta, generators);
+			break;
+		case 4:
+			getGeneratorsFromFraction(generators, spe_fract);
 			break;
 	}
 
