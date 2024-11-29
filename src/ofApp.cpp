@@ -5,18 +5,17 @@
 #include "accidents.h"
 
 void ofApp::setup(){
-	ofRectangle bounds(-3, -3, 6, 6); 
 	menu = new ofxDatGui( ofxDatGuiAnchor::TOP_LEFT );
 	
 	vector<string> recipes = {"Grandma Recipe", "Grandma Special Recipe",  "Maskit Recipe", "Jorgensen Recipe"};
-  menu -> addDropdown("Recipe", recipes); 
+  menu -> addDropdown("Recipe", recipes) -> select(0); 
 
 	menu -> addSlider("ta (real part)", -3, 3, 2);
 	menu -> addSlider("ta (imag part)", -3, 3, 0);
 	menu -> addSlider("tb (real part)", -3, 3, 2);
 	menu -> addSlider("tb (imag part)", -3, 3, 0);
-	menu -> addSlider("taB (real part)", -3, 3);
-	menu -> addSlider("taB (imag part)", -3, 3);
+	menu -> addSlider("taB (real part)", -3, 3) -> setVisible(false);
+	menu -> addSlider("taB (imag part)", -3, 3) -> setVisible(false);
 
 	menu -> addSlider("Maximum Depth", 5, 1000, max_d);
 	menu -> addSlider("Epsilon", 0.001, 0.1, epsilon);
@@ -28,6 +27,7 @@ void ofApp::setup(){
   menu -> onButtonEvent(this, &ofApp::onButtonEvent);
   menu -> onToggleEvent(this, &ofApp::onToggleEvent);
   menu -> onDropdownEvent(this, &ofApp::onDropdownEvent);
+
 
 
 	const complex<float> i(0.0, 1.0);
