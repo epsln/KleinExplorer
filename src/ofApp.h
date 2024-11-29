@@ -16,6 +16,7 @@ class ofApp : public ofBaseApp{
 		ofImage img;
 
 		int currentRecipeIndex = 0;
+		bool realTimeMode = false;
 		
 		complex<float> ta, tb, tab;
 		MobiusT generators[4];
@@ -33,6 +34,7 @@ class ofApp : public ofBaseApp{
 		void keyPressed(int key) override;
     void onButtonEvent(ofxDatGuiButtonEvent e);
     void onSliderEvent(ofxDatGuiSliderEvent e);
+    void onToggleEvent(ofxDatGuiToggleEvent e);
     void onDropdownEvent(ofxDatGuiDropdownEvent e);
 };
 

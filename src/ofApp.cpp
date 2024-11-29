@@ -11,21 +11,23 @@ void ofApp::setup(){
 	vector<string> recipes = {"Grandma Recipe", "Grandma Special Recipe",  "Maskit Recipe", "Jorgensen Recipe"};
   menu -> addDropdown("Recipe", recipes); 
 
-	menu -> addSlider("ta (real part)", -3, 3);
-	menu -> addSlider("ta (imag part)", -3, 3);
-	menu -> addSlider("tb (real part)", -3, 3);
-	menu -> addSlider("tb (imag part)", -3, 3);
+	menu -> addSlider("ta (real part)", -3, 3, 2);
+	menu -> addSlider("ta (imag part)", -3, 3, 0);
+	menu -> addSlider("tb (real part)", -3, 3, 2);
+	menu -> addSlider("tb (imag part)", -3, 3, 0);
 	menu -> addSlider("taB (real part)", -3, 3);
 	menu -> addSlider("taB (imag part)", -3, 3);
 
 	menu -> addSlider("Maximum Depth", 5, 1000);
 	menu -> addSlider("Epsilon", 0.001, 0.1);
-	menu -> addButton("Compute !");
+	menu -> addToggle("Real Time Mode");
 	menu -> addButton("Save Image");
+	menu -> addButton("Compute !");
 
   menu -> onSliderEvent(this, &ofApp::onSliderEvent);
-  menu->onButtonEvent(this, &ofApp::onButtonEvent);
-  menu->onDropdownEvent(this, &ofApp::onDropdownEvent);
+  menu -> onButtonEvent(this, &ofApp::onButtonEvent);
+  menu -> onToggleEvent(this, &ofApp::onToggleEvent);
+  menu -> onDropdownEvent(this, &ofApp::onDropdownEvent);
 
 
 	const complex<float> i(0.0, 1.0);
@@ -59,22 +61,13 @@ void ofApp::keyPressed(int key){
 	ke.set_coords(center, zoom);
 }
 
+void ofApp::onToggleEvent(ofxDatGuiToggleEvent e){
+	realTimeMode = e.checked;
+	menu -> getButton("compute !") -> setVisible(!e.checked);
+}
+
 void ofApp::onButtonEvent(ofxDatGuiButtonEvent e){
 	if (e.target -> is("compute !")){
-		switch(currentRecipeIndex){
-			case 0:
-				grandmaRecipe(ta, tb, generators);
-				break;
-			case 1:
-				grandmaSpecialRecipe(ta, tb, tab, generators);
-				break;
-			case 2:
-				jorgensen(ta, tb, generators);
-				break;
-			case 3:
-				maskitRecipe(ta, generators);
-				break;
-		}
 		spe_fract = Fraction(1, 2);
 		kfm = KleinFractalModel(generators, spe_fract);
 		ke.set_klein_model(kfm);
@@ -136,4 +129,27 @@ void ofApp::onSliderEvent(ofxDatGuiSliderEvent e){
 		tab = e.target->getValue() * i + real(ta);
 
 	ke.set_compute_params(max_d, epsilon);
+	switch(currentRecipeIndex){
+			case 0:
+				grandmaRecipe(ta, tb, generators);
+				break;
+			case 1:
+				grandmaSpecialRecipe(ta, tb, tab, generators);
+				break;
+			case 2:
+				jorgensen(ta, tb, generators);
+				break;
+			case 3:
+				maskitRecipe(ta, generators);
+				break;
+	}
+
+	if (realTimeMode){
+		ofLog(OF_LOG_NOTICE, "Computing");
+		spe_fract = Fraction(1, 2);
+		kfm = KleinFractalModel(generators, spe_fract);
+		ke.set_klein_model(kfm);
+		ke.compute();
+		img.grabScreen(0,0,ofGetWidth(),ofGetHeight());
+	}
 }
