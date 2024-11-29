@@ -18,8 +18,8 @@ void ofApp::setup(){
 	menu -> addSlider("taB (real part)", -3, 3);
 	menu -> addSlider("taB (imag part)", -3, 3);
 
-	menu -> addSlider("Maximum Depth", 5, 1000);
-	menu -> addSlider("Epsilon", 0.001, 0.1);
+	menu -> addSlider("Maximum Depth", 5, 1000, max_d);
+	menu -> addSlider("Epsilon", 0.001, 0.1, epsilon);
 	menu -> addToggle("Real Time Mode");
 	menu -> addButton("Save Image");
 	menu -> addButton("Compute !");
@@ -145,7 +145,6 @@ void ofApp::onSliderEvent(ofxDatGuiSliderEvent e){
 	}
 
 	if (realTimeMode){
-		ofLog(OF_LOG_NOTICE, "Computing");
 		spe_fract = Fraction(1, 2);
 		kfm = KleinFractalModel(generators, spe_fract);
 		ke.set_klein_model(kfm);
